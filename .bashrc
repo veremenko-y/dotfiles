@@ -8,6 +8,7 @@
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
+#source /usr/share/blesh/ble.sh --noattach
 PS1='[\u@\h \W]\$ '
 #export PS1="\e[0;32m[\u@\h \W]\$ \e[m"
 
@@ -29,7 +30,6 @@ shopt -s histverify
 # overwriting the file.  See bash(1) and <https://unix.stackexchange.com/a/6509>.
 shopt -s histappend
 export HISTCONTROL=ignoreboth
-#PROMPT_COMMAND="history -a; history -n"
 export HISTFILE=$HOME/.bash_history
 export HISTSIZE=-1
 export HISTFILESIZE=-1
@@ -76,27 +76,12 @@ test -r $DIRCOLOR && eval "$(dircolors -b $DIRCOLOR)" || eval "$(dircolors -b)"
 # To turn syntax highlighting off, append colon (:) to the file name
 
 alias less='less -R'
-#export LESS='eFRX' ## does not work with pipes
-#export LESS='R --mouse --wheel-lines=3'
-# Enable lesspipe filter
-# ------
-# Old configuration backup
-# ------
-#export LESSOPEN='|lesspipe.sh %s'
-#export LESSCOLORIZER='vimcolor' # it's not for nvim colors
-#lessc () { /usr/share/nvim/runtime/macros/less.sh "$@"; }
-# ------
 # New cofiguration
 LESSOPEN="|/usr/bin/lesspipe.sh %s"
 export LESSOPEN
 LESSCOLORIZER='source-highlight'
 export LESSCOLORIZER
 # ------
-
-#
-# FZF script
-# 
-. /usr/share/fzf/key-bindings.bash
 
 #
 # OneDark prompt
@@ -109,4 +94,17 @@ powerline-daemon -q
 POWERLINE_BASH_CONTINUATION=1
 POWERLINE_BASH_SELECT=1
 . /usr/share/powerline/bindings/bash/powerline.sh
+
+# FZF Key bindings
+# ------------
+_ble_contrib_fzf_base=/usr/share/fzf
+if [[ ${BLE_VERSION-} ]]; then
+  ble-import -d integration/fzf-key-bindings
+else
+  source /usr/share/fzf/key-bindings.bash
+fi
+
+# Add this line at the end of .bashrc:
+[[ ${BLE_VERSION-} ]] && ble-attach
+
 
