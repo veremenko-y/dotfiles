@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Human readable df disabling not nessesarily relevan filesystems
+df "$@" | grep -E -v '^(tmpfs|dev|run|efivarfs)'

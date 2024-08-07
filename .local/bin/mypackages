@@ -1,0 +1,8 @@
+#!/bin/bash
+export LC_ALL=C
+i=0
+while IFS= read -r pkg; do
+    idate="$(pacman -Qi "$pkg" | sed -n '/^Install Date/s/.* : //p')"
+    numdate="$(date -d "$idate" +%Y-%m-%d)"
+    printf '%s\t%s\t%s\n' $numdate $pkg
+done < <(pacman -Qqe) | column -ts $'\t' | sort -nk1

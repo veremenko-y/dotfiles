@@ -1,0 +1,2 @@
+#!/bin/bash
+sudo xbacklight intel_backlight -set "$1"

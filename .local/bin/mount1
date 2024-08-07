@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Human readable mount. Only show physical discs
+mount | grep -E '^/'

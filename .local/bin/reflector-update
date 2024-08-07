@@ -1,0 +1,4 @@
+#!/bin/bash
+OUT=~/mirrorlist.tmp
+reflector --country US,CA --protocol https --latest 10 --sort rate --save ~/mirrorlist.tmp --threads 4 --verbose
+echo "Saved mirrors to $OUT"

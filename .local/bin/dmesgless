@@ -1,0 +1,3 @@
+#!/bin/bash -i
+sudo dmesg --color=always $1 | less --use-color
+

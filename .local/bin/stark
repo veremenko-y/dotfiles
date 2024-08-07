@@ -1,0 +1,3 @@
+#!/usr/bin/env /bin/bash
+nohup remmina -c ~/.local/share/remmina/group_rdp_stark_192-168-50-32.remmina &
+

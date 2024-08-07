@@ -1,0 +1,12 @@
+#!/bin/bash
+BATTERIES=$(ls /sys/class/power_supply | grep BAT)
+BAT_COUNT=$(ls /sys/class/power_supply | grep BAT | wc -l)
+BAT_TOTAL_LEVEL=0
+for BATTERY in $BATTERIES; do
+    BAT_PATH=/sys/class/power_supply/$BATTERY
+    LEVEL=$(cat $BAT_PATH/capacity)
+    BAT_TOTAL_LEVEL=$((BAT_TOTAL_LEVEL + LEVEL))
+    BAT_LEVEL="$BAT_LEVEL$LEVEL% "
+done
+echo "$BAT_LEVEL"
+

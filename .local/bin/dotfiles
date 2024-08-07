@@ -1,0 +1,21 @@
+#!/bin/bash
+rsync -avr --safe-links \
+        --include '/.*rc' \
+        --include '/.*profile' \
+        --include '/.*env' \
+        --include '/.gitconfig' \
+        --include '/.icons' \
+        --include '/.gdbinit' \
+        --include '/.lesshst' \
+        --include '/.xmodmap' \
+        --include '/.local' \
+        --exclude '/*' \
+        --exclude '/.local/share' \
+        --exclude '/.local/state' \
+        --exclude '/.local/lib' \
+        --exclude '/.config/menus' \
+        --exclude '/.config/cni' \
+        --exclude '/.config/Nextcloud' \
+    ~/ /mnt/greyjoy-yaroslav/dotfiles --delete
+
+# --include '/.themes' \

@@ -1,0 +1,11 @@
+#!/bin/bash
+CONFIG="wg0greyjoy"
+if [ ! -z "$1" ]
+then
+    CONFIG="$CONFIG-$1"
+fi
+
+echo "Starting $CONFIG"
+echo "$CONFIG" > /tmp/wg-config
+sudo wg-quick up "$CONFIG"
+

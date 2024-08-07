@@ -1,0 +1,41 @@
+#!/bin/bash
+WHYRCPATH=~/.config/.whyrc
+[ -f $WHYRCPATH ] && source $WHYRCPATH
+
+usage() {
+    echo "usage: why [add <command>] [<command>]"
+    echo -e "\t - list all available commands"
+    echo -e "\t<command> - print description of the command or search"
+    echo -e "\t--add <command> - add description for the command"
+    echo -e "\t--all - print all commands with full description"
+}
+
+if [ "x$WHYPATH" == "x" ]; then
+    echo "WHYPATH is not set"
+    exit
+fi
+
+if [ "$1" == "--edit" ] || [ "$1" == "-e" ]; then
+    if [ "x$2" == "x" ]; then
+        usage
+        exit
+    fi
+    $EDITOR "$WHYPATH/$2"
+elif [ "$1" == "--all" ]; then
+    ls | xargs -I % sh -c "echo '%:'; cat '%'; echo"
+elif [ "$1" == "--help" ]; then
+    usage
+    exit
+elif [ "x$1" == "x" ]; then
+    echo "Available notes:"
+    ls $WHYPATH | sort | xargs -I{} echo {} - "$(head $WHYPATH/{} -n1)"
+else
+    if [ -f "$WHYPATH/$1" ]; then
+        cat "$WHYPATH/$1"
+        rg -C 3 -i $1 $2 "$WHYPATH" -g '!'"$1"
+    else
+        rg -C 3 -i $1 $2 "$WHYPATH"
+    fi
+fi
+
+

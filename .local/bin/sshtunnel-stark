@@ -1,0 +1,6 @@
+#!/bin/bash
+FROM=5901
+TO=9901
+echo "Tunneling port remote:$FROM to localhost:$TO"
+ssh yaroslav@192.168.50.32 -L $FROM:localhost:$TO
+

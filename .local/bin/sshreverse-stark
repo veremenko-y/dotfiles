@@ -1,0 +1,10 @@
+#!/bin/bash
+PORT=9000
+USER=yaroslav
+HOST=STARK.local
+#echo "Tunneling port remote:$FROM to localhost:$TO"
+# ssh yaroslav@192.168.50.32 -L $FROM:localhost:$TO
+echo "Reverse tunnel for $USER@$HOST at port $PORT"
+echo "Run ssh -p $PORT $USER@localhost"
+ssh -R $PORT:localhost:22 $USER@$HOST
+#nohup ssh -R $PORT:localhost:22 $USER@$HOST 0</dev/zero

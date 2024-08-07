@@ -1,0 +1,4 @@
+#!/bin/bash
+# clears entire screen
+printf '\E[H\E[3J'
+

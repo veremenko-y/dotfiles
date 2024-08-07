@@ -1,0 +1,10 @@
+#!/bin/bash
+name=$(basename -- "$0")
+if [ $# -eq 1 ]
+then
+ cp -bpvi "$1" "${1}.orig"
+else
+ echo "$name: copies to a backup file"
+ echo
+ echo "Usage: $name FILE"
+fi

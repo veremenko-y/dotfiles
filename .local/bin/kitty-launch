@@ -1,0 +1,3 @@
+#!/bin/bash
+echo /tmp/kittysocket-* | xargs -I{} kitty @ --to unix:{} $*
+

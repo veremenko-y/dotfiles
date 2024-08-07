@@ -1,0 +1,22 @@
+#!/bin/bash
+FLAGS=
+FILE1=
+FILE2=
+for arg in "$@"
+do
+    if [[ $arg == "-C" ]]; then
+        FLAGS+="-C"
+    elif [[ $FILE1 == "" ]]; then
+        FILE1=$arg
+    else
+        FILE2=$arg
+    fi
+done
+
+#if [[ $# != 2 ]]; then
+#    echo "Usage: bindiff [FILE1] [FILE2]"
+#    exit 1
+#fi
+#diff -auN <(xxd -p $1) <(xxd -p $2) | colordiff | diff-highlight
+#diff -auN <(hexdump $1) <(hexdump $2) | colordiff | diff-highlight
+diff -auN <(hexdump $FLAGS $FILE1) <(hexdump $FLAGS $FILE2) | colordiff | diff-highlight

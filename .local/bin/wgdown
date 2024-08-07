@@ -1,0 +1,11 @@
+#!/bin/bash
+
+CONFIG=""
+if test -f /tmp/wg-config; then
+    CONFIG=$(cat /tmp/wg-config)
+    echo "Stopping $CONFIG"
+    sudo wg-quick down "$CONFIG"
+else
+    echo "No config file found"
+fi
+
