@@ -12,13 +12,20 @@
 PS1='[\u@\h \W]\$ '
 #export PS1="\e[0;32m[\u@\h \W]\$ \e[m"
 
-# =========
 # My config
-# =========
+# ---------
+if [ "$SYSTEM" == "Darwin" ]; then
+    export BASH_SILENCE_DEPRECATION_WARNING=1
+    HOSTNAME=$(hostname -s | sed 's/'$(whoami)'-//')
+else
+    HOSTNAME=$(hostnamectl hostname --pretty)
+    alias la='ls -la --group-directories-first'
+fi
 
 #
 # History settings
-#
+# ----------------
+
 # Stuff concerning Bash's command history
 shopt -s histverify
 
@@ -38,8 +45,6 @@ export HISTTIMEFORMAT="%y-%m-%d %T "
 #
 # Prompt settings
 #
-#PROMPT_COMMAND='echo -en "\e]0;$(dirs)\a"'  
-#PROMPT_COMMAND="history -a; history -n;$PROMPT_COMMAND" # append history, read history
 
 # Load all bash completions
 if ! shopt -oq posix; then
@@ -47,6 +52,8 @@ if ! shopt -oq posix; then
     . /usr/share/bash-completion/bash_completion
   elif [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
+  elif [ -f /opt/brew/etc/profile.d/bash_completion.sh ]; then
+    . /opt/brew/etc/profile.d/bash_completion.sh
   fi
 fi
 
@@ -59,15 +66,14 @@ force_color_prompt=yes
 shopt -s checkwinsize # always check windows size
 export PATH="/home/yaroslav/.local/bin:$PATH"
 
-. ~/.config/shell/aliases
+[ -f ~/.config/shell/aliases ] && source ~/.config/shell/aliases
 
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 DIRCOLOR=~/.config/bash/dircolors
 test -r $DIRCOLOR && eval "$(dircolors -b $DIRCOLOR)" || eval "$(dircolors -b)"
 
-#
 # Less configuration
-#
+# ------------------
 
 # Enable color output. Also enables lesspipe colorizer.
 # lesspipe manpage states not to us `-r` option as it could
@@ -77,23 +83,24 @@ test -r $DIRCOLOR && eval "$(dircolors -b $DIRCOLOR)" || eval "$(dircolors -b)"
 
 alias less='less -R'
 # New cofiguration
-LESSOPEN="|/usr/bin/lesspipe.sh %s"
-export LESSOPEN
-LESSCOLORIZER='source-highlight'
-export LESSCOLORIZER
+if [ type -p lesspipe.sh ]; then
+    LESSOPEN="|/usr/bin/lesspipe.sh %s"
+    export LESSOPEN
+    LESSCOLORIZER='source-highlight'
+    export LESSCOLORIZER
+fi
 # ------
 
-#
-# OneDark prompt
-#
-#. ~/.config/bash/onedark_prompt.sh
+# Powerline Prompt 
+# ----------------
+[ -f /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
 
-source /usr/share/nvm/init-nvm.sh
-
-powerline-daemon -q
-POWERLINE_BASH_CONTINUATION=1
-POWERLINE_BASH_SELECT=1
-. /usr/share/powerline/bindings/bash/powerline.sh
+if [ type -p powerline-daemon ]; then
+    powerline-daemon -q
+    POWERLINE_BASH_CONTINUATION=1
+    POWERLINE_BASH_SELECT=1
+    . /usr/share/powerline/bindings/bash/powerline.sh
+fi
 
 # FZF Key bindings
 # ------------
@@ -106,5 +113,4 @@ fi
 
 # Add this line at the end of .bashrc:
 [[ ${BLE_VERSION-} ]] && ble-attach
-
 
